@@ -1,22 +1,22 @@
 import React, { FC } from "react";
 import { Box, Dialog, IconButton, Typography } from "@mui/material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import FormSigIn from "./FormSigIn";
-import "./sigInModal.css";
+import FormSigIn from "./FormLogIn";
+import "./logInModal.css";
 
 interface SigInModalProps {
   open: boolean;
   handleClose: () => void;
 }
 
-const SigInModal: FC<SigInModalProps> = ({ open, handleClose }) => {
+const LogInModal: FC<SigInModalProps> = ({ open, handleClose }) => {
   return (
     <Dialog open={open} onClose={handleClose}>
       <Box className="modal-container">
         <IconButton onClick={handleClose} className="button-back">
           <ArrowBackIcon />
         </IconButton>
-        <FormSigIn handleClose={handleClose} />
+        <FormSigIn handleClose={handleClose} isLogin={true} />
         <Box sx={{ width: "50%", background: "#1c1c1c", position: "relative" }}>
           <div
             style={{
@@ -39,4 +39,4 @@ const SigInModal: FC<SigInModalProps> = ({ open, handleClose }) => {
   );
 };
 
-export default SigInModal;
+export default LogInModal;

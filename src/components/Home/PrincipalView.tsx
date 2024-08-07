@@ -9,7 +9,9 @@ import { Box, Grid } from "@mui/material";
 import MovieCard from "../Utils/sections/MovieCard";
 
 const PrincipalView = () => {
-  const { genreMovies } = useAppSelector((state) => state.movies);
+  const { genreMovies, isLoadingMovies } = useAppSelector(
+    (state) => state.movies
+  );
 
   return (
     <Box sx={{ width: "95%", margin: "auto" }}>

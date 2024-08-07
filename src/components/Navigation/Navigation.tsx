@@ -17,7 +17,7 @@ import LoginIcon from "@mui/icons-material/Login";
 import { RootState } from "@/app/store";
 import { toggleDarkMode } from "@/Slices/theme/ThemeSlice";
 import { useTranslation } from "react-i18next";
-import SigInModal from "../modals/SigInModal";
+import SigInModal from "../modals/logInModal";
 import "./navigation.css";
 
 const Navigation = () => {

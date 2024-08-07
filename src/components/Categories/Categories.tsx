@@ -11,7 +11,13 @@ const Categories = () => {
           key={index}
           sx={{
             width: "100%",
-            overflowX: "scroll",
+            overflowX: "auto",
+            "&::-webkit-scrollbar": {
+              height: "4px" /* Ajusta el tamaño del scrollbar */,
+            },
+
+            scrollbarWidth: "thin",
+            scrollbarColor: "#aeaeab #3e3e3e",
           }}
         >
           <MoviesSections

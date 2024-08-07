@@ -17,9 +17,13 @@
   color: white;
 }
 
-.button-sigin {
+.button-login {
   background: #f0b90b;
   border-radius: 5px;
+}
+
+.button-login :hover {
+  background: red;
 }
 
 .image-styles {

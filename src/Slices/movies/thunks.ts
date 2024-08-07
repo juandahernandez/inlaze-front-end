@@ -45,8 +45,6 @@ export const getMovieByGenreId = createAsyncThunk(
 export const getMovieById = createAsyncThunk(
   "movies/getMovieById",
   async (movieID: number) => {
-    console.log({ movieID });
-
     try {
       const data = await fetchData(`movie/${movieID}`, "language=en-US");
       console.log("thunk", data);

@@ -30,6 +30,7 @@ export const moviesSlice = createSlice({
         (state, { payload }: PayloadAction<any>) => {
           if (payload.category.includes("popular")) {
             state.popularMovies = payload.movies;
+            state.isLoadingMovies = false;
           }
 
           const newMovies = {
