@@ -4,6 +4,7 @@ import {
   getGenres,
   getMovieByGenreId,
   getMovieById,
+  getUserById,
 } from "./thunks";
 import type { MovieResponse, Movies, MoviesData } from "@/interfaces";
 
@@ -18,8 +19,24 @@ export const moviesSlice = createSlice({
     generId: "",
     genreMovies: {} as MoviesData,
     movieById: {} as any,
+    userData: {} as any,
+    isLoadingUser: false,
+    favoriteMovies: {} as any,
   },
-  reducers: {},
+  reducers: {
+    addFavoriteMovie: (state, { payload }) => {
+      const updatedFavoritesMovies = state.userData.favoritiesMovies
+        ? [...state.userData.favoritiesMovies, payload]
+        : [payload];
+
+      state.userData = {
+        ...state.userData,
+        favoritiesMovies: updatedFavoritesMovies,
+      };
+
+      console.log(state.userData);
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchMovies.pending.type, (state) => {
@@ -77,5 +94,19 @@ export const moviesSlice = createSlice({
           state.isLoadingMovies = false;
         }
       );
+
+    builder
+      .addCase(getUserById.pending.type, (state) => {
+        state.isLoadingUser = true;
+      })
+      .addCase(
+        getUserById.fulfilled.type,
+        (state, { payload }: PayloadAction<any>) => {
+          state.userData = payload;
+          state.isLoadingUser = false;
+        }
+      );
   },
 });
+
+export const { addFavoriteMovie } = moviesSlice.actions;

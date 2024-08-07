@@ -1,5 +1,7 @@
 import { fetchData } from "@/app/api";
+import { getToken } from "@/components/helpers/getToken";
 import { createAsyncThunk } from "@reduxjs/toolkit";
+import axios from "axios";
 
 export const fetchMovies = createAsyncThunk(
   "movies/getMoviesByCategories",
@@ -55,3 +57,14 @@ export const getMovieById = createAsyncThunk(
     }
   }
 );
+
+export const getUserById = createAsyncThunk("movies/getUsers", async () => {
+  try {
+    const userId = getToken();
+    const url = `https://nest-test-rlph.onrender.com/users/${userId}`;
+    const { data } = await axios.get(url);
+    return data;
+  } catch (error) {
+    console.log(error);
+  }
+});

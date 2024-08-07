@@ -63,7 +63,7 @@ const MovieCard: FC<MovieCardProps> = ({
       </CardContent>
       <CardActions disableSpacing>
         <RatingIndicator rating={voteAverage} width={40} height={40} />
-        <IconsCarousel isSave={false} />
+        <IconsCarousel isSave={false} id={id} />
       </CardActions>
     </Card>
   );

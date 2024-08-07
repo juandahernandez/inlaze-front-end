@@ -1,14 +1,37 @@
 import { IconButton, Tooltip } from "@mui/material";
-import React, { FC } from "react";
+import React, { FC, useEffect } from "react";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import SaveIcon from "@mui/icons-material/Save";
 import BookmarkIcon from "@mui/icons-material/Bookmark";
 
+import { getToken } from "@/components/helpers/getToken";
+import axios from "axios";
+import { useAppDispatch, useAppSelector } from "@/app/store";
+import { addFavoriteMovie, getUserById } from "@/Slices/movies";
+
 interface IconsCarouselProps {
   isSave: boolean;
+  id: number;
 }
 
-const IconsCarousel: FC<IconsCarouselProps> = ({ isSave = true }) => {
+const IconsCarousel: FC<IconsCarouselProps> = ({ isSave = true, id }) => {
+  const { userData } = useAppSelector((state) => state.movies);
+  const dispatch = useAppDispatch();
+
+  const toggleFavorite = async (e: any) => {
+    e.stopPropagation();
+    try {
+      const userId = getToken();
+      const url = `https://nest-test-rlph.onrender.com/users/${userId}/favoritiesMovies`;
+      const body = {
+        movieIds: [id],
+      };
+      await axios.patch(url, body);
+      dispatch(addFavoriteMovie(id));
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <div
       style={{
@@ -18,7 +41,13 @@ const IconsCarousel: FC<IconsCarouselProps> = ({ isSave = true }) => {
       }}
     >
       <Tooltip title="Favorites" arrow>
-        <IconButton style={{ color: "white" }} aria-label="favorites">
+        <IconButton
+          style={{
+            color: userData?.favoritiesMovies?.includes(id) ? "red" : "white",
+          }}
+          onClick={toggleFavorite}
+          aria-label="favorites"
+        >
           <FavoriteIcon />
         </IconButton>
       </Tooltip>
@@ -29,7 +58,12 @@ const IconsCarousel: FC<IconsCarouselProps> = ({ isSave = true }) => {
       </Tooltip>
       {isSave && (
         <Tooltip title="Save" arrow>
-          <IconButton style={{ color: "white" }} aria-label="Save">
+          <IconButton
+            style={{
+              color: "white",
+            }}
+            aria-label="Save"
+          >
             <SaveIcon />
           </IconButton>
         </Tooltip>

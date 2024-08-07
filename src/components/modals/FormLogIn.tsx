@@ -10,6 +10,8 @@ import {
 } from "@mui/material";
 import axios from "axios";
 import "./logInModal.css";
+import { useAppDispatch } from "@/app/store";
+import { getUserById } from "@/Slices/movies";
 
 interface FormLogInProps {
   handleClose: () => void;
@@ -30,7 +32,9 @@ const FormLogIn: FC<FormLogInProps> = ({ handleClose, isLogin }) => {
     email: "",
     password: "",
   });
+
   const [successMessage, setSuccessMessage] = useState<string>("");
+  const dispatch = useAppDispatch();
 
   const handleLogin = () => {
     setLogin(true);
@@ -56,8 +60,12 @@ const FormLogIn: FC<FormLogInProps> = ({ handleClose, isLogin }) => {
     setIsLoading(true);
     setSuccessMessage("");
 
+    const url = login
+      ? "https://nest-test-rlph.onrender.com/auth/login"
+      : "https://nest-test-rlph.onrender.com/users";
+
     try {
-      const endpoint = "https://nest-test-rlph.onrender.com/users";
+      const endpoint = url;
       const payload = {
         username: form.name,
         email: form.email,
@@ -65,16 +73,24 @@ const FormLogIn: FC<FormLogInProps> = ({ handleClose, isLogin }) => {
       };
 
       const response = await axios.post(endpoint, payload);
-
-      console.log(response.data);
-
-      setSuccessMessage("Registration successful! You can now log in.");
+      const msg = login
+        ? "Login successfull"
+        : "Registration successful! You can now log in.";
+      setSuccessMessage(msg);
       setForm({
         name: "",
         email: "",
         password: "",
       });
-      setLogin(true);
+      if (login) {
+        const { data } = response;
+        const accessToken = data.access_token;
+        localStorage.setItem("token", accessToken);
+        await dispatch(getUserById());
+        handleClose();
+      } else {
+        setLogin(true);
+      }
     } catch (error) {
       console.error("FAILED...", error);
       setSuccessMessage("Registration failed. Please try again.");
@@ -93,7 +109,6 @@ const FormLogIn: FC<FormLogInProps> = ({ handleClose, isLogin }) => {
               background: login ? "#f0b90b" : "black",
             },
           }}
-          type="submit"
           variant="contained"
           disabled={isLoading}
           onClick={handleLogin}
@@ -107,7 +122,6 @@ const FormLogIn: FC<FormLogInProps> = ({ handleClose, isLogin }) => {
               background: !login ? "#f0b90b" : "black",
             },
           }}
-          type="button"
           variant="contained"
           disabled={isLoading}
           onClick={handleSignUp}
@@ -149,6 +163,17 @@ const FormLogIn: FC<FormLogInProps> = ({ handleClose, isLogin }) => {
         required
         sx={{ background: "white" }}
       />
+
+      <Button
+        sx={{
+          background: "#f0b90b",
+        }}
+        variant="contained"
+        disabled={isLoading}
+        type="submit"
+      >
+        {isLoading ? <CircularProgress size={20} /> : "Send"}
+      </Button>
       {successMessage && (
         <Alert
           sx={{ marginTop: "16px" }}
