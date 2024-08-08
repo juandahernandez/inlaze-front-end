@@ -61,8 +61,8 @@ const FormLogIn: FC<FormLogInProps> = ({ handleClose, isLogin }) => {
     setSuccessMessage("");
 
     const url = login
-      ? "https://nest-test-rlph.onrender.com/auth/login"
-      : "https://nest-test-rlph.onrender.com/users";
+      ? "https://inlaze-back-end.onrender.com/auth/login"
+      : "https://inlaze-back-end.onrender.com/users";
 
     try {
       const endpoint = url;

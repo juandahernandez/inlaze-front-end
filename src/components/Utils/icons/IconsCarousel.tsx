@@ -22,7 +22,7 @@ const IconsCarousel: FC<IconsCarouselProps> = ({ isSave = true, id }) => {
     e.stopPropagation();
     try {
       const userId = getToken();
-      const url = `https://nest-test-rlph.onrender.com/users/${userId}/favoritiesMovies`;
+      const url = `https://inlaze-back-end.onrender.com/users/${userId}/favoritiesMovies`;
       const body = {
         movieIds: [id],
       };
